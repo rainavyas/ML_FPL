@@ -31,7 +31,9 @@ def create_tables():
     mycursor.execute("DROP DATABASE FPL")
     mycursor.execute("CREATE DATABASE FPL")
     mycursor.execute("USE FPL")
-    mycursor.execute("CREATE TABLE Playerid (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), team VARCHAR(255))")
+    mycursor.execute("CREATE TABLE PLAYERID (Playerid INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), team VARCHAR(255))")
+    mycursor.execute("CREATE TABLE MATCHID (Matchid INT AUTO_INCREMENT PRIMARY KEY, home VARCHAR(255), away VARCHAR(255), )")
+
     #mycursor.execute("CREATE TABLE MATCHID (name VARCHAR(255), address VARCHAR(255))")
     #mycursor.execute("CREATE TABLE PLAYERMATCHID (name VARCHAR(255), address VARCHAR(255))")
 
