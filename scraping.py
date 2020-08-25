@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import mysql.connector
+from get_URL import get_url
 
 def get_table_data(url):
     # GET request to fetch the raw HTML content
@@ -33,10 +34,13 @@ def get_table_data(url):
 
         table_data.append(t_row)
 
-    return table_data
+    # Filter to only keep premier league games
+    clean_table = [i for i in table_data if i["Comp"] == "Premier League"]
+
+    return clean_table
 
 
-def write_to_DB(table_data, table_name):
+def write_to_DB(table_data, player_name, season):
     mydb = mysql.connector.connect(
         host = "localhost",
         user = "root",
@@ -46,26 +50,27 @@ def write_to_DB(table_data, table_name):
 
     mycursor = mydb.cursor()
 
-    # Only create table if it doesn't already exist
-    mycursor.execute("SHOW TABLES")
-    results = mycursor.fetchall()
-    results_list = [item[0] for item in results]
-
-    if table_name not in results_list:
-        # Create table
-        mycursor.execute("CREATE TABLE "+table_name)
+    # Adian's bit
 
 
 
-url = "https://fbref.com/en/players/e06683ca/matchlogs/2019-2020/summary/Virgil-van-Dijk-Match-Logs"
-url_parts = url.split("/")
-season = url_parts[-3]
-season = season.replace('-', '')
-name_logs = url_parts[-1]
-name = name_logs[:-11]
-name = name.replace('-','')
-table_name = name+season
+# Read premier league players from text file
+# # TEMP:
+premier_league_player_names = ["Virgil van Dijk", "Paul Pogba", "Ben Chilwell"]
+seasons = ["2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020"]
 
 
-table_data = get_table_data(url)
-write_to_DB(table_data, table_name)
+for name in premier_league_player_names:
+    for season in seasons:
+        url = get_url(name, season)
+
+        try:
+            table_data = get_table_data(url)
+            print(table_data[0])
+        except:
+            # Webpage probably doesn't exist
+            print("failed")
+            continue
+
+
+        #write_to_DB(table_data, name, season)
