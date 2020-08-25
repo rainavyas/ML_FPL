@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 import time
 
 def get_url(player_name):
-    driver = webdriver.Chrome(executable_path=r'/Users/adian/Documents/PROJECTS/BOT/chromedriver')
+    driver = webdriver.Chrome()
     driver.get("https://fbref.com/en")
     time.sleep(1)
 
@@ -32,7 +32,6 @@ def get_link_list(name_list):
         output_list.append(get_url(i))
 
 liverpool = ["Virgil Van Dijk", "Sadio Mane", "Andrew Robertson", "Xedan Shaqiri"]
-test = ["Bob"]
 get_link_list(test)
 
 
