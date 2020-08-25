@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 
 import time
 
-def get_url(player_name):
+def get_url(player_name, season):
     driver = webdriver.Chrome()
     driver.get("https://fbref.com/en")
     time.sleep(1)
@@ -17,23 +17,10 @@ def get_url(player_name):
     driver.find_element_by_class_name("ac-suggestion").click()
     time.sleep(1)
     url = driver.current_url
-    return(get_summary(url))
+    return(get_summary(url, season))
 
-def get_summary(url):
+def get_summary(url, season):
     split_url = url.split("/")
     player = split_url.pop()
-    split_url.extend(["matchlogs","2019-2020","summary", player + "-Match-Logs"])
+    split_url.extend(["matchlogs", season, "summary", player + "-Match-Logs"])
     return("/".join(split_url))
-
-
-def get_link_list(name_list):
-    output_list = []
-    for i in name_list:
-        output_list.append(get_url(i))
-
-liverpool = ["Virgil Van Dijk", "Sadio Mane", "Andrew Robertson", "Xedan Shaqiri"]
-get_link_list(test)
-
-
-#url = get_url("Virgil Van Dijk")
-#url = get_summary(url)
