@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import mysql.connector
 from get_URL import get_url
+from get_players_list import get_players
 
 def get_table_data(url):
     # GET request to fetch the raw HTML content
@@ -54,9 +55,8 @@ def write_to_DB(table_data, player_name, season):
 
 
 
-# Read premier league players from text file
-# # TEMP:
-premier_league_player_names = ["Virgil van Dijk", "Paul Pogba", "Ben Chilwell"]
+
+premier_league_player_names = get_players()
 seasons = ["2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020"]
 
 
@@ -73,4 +73,4 @@ for name in premier_league_player_names:
             continue
 
 
-        #write_to_DB(table_data, name, season)
+        write_to_DB(table_data, name, season)
