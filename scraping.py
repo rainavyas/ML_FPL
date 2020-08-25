@@ -59,14 +59,18 @@ def write_to_DB(table_data, player_name, season):
 premier_league_player_names = ["Virgil van Dijk", "Paul Pogba", "Ben Chilwell"]
 seasons = ["2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020"]
 
+
 for name in premier_league_player_names:
     for season in seasons:
         url = get_url(name, season)
 
         try:
-            table_data = get_table_data
+            table_data = get_table_data(url)
+            print(table_data[0])
         except:
             # Webpage probably doesn't exist
+            print("failed")
             continue
 
-        write_to_DB(table_data, name, season)
+
+        #write_to_DB(table_data, name, season)
