@@ -28,7 +28,7 @@ def create_tables():
     mydb = mysql.connector.connect(host='localhost',database='mysql',user='root',password="499587li")
     mycursor = mydb.cursor()
 
-    #mycursor.execute("DROP DATABASE FPL")
+    mycursor.execute("DROP DATABASE FPL")
     mycursor.execute("CREATE DATABASE FPL")
     mycursor.execute("USE FPL")
 
@@ -36,15 +36,13 @@ def create_tables():
     mycursor.execute("CREATE TABLE Matches (Match_id INT AUTO_INCREMENT PRIMARY KEY, Season VARCHAR(255) NOT NULL, Round VARCHAR(255), Date DATE, Team VARCHAR(255) NOT NULL, Opponent VARCHAR(255) NOT NULL, Venue VARCHAR(255) NOT NULL, Result VARCHAR(255) NOT NULL)")
     mycursor.execute("CREATE TABLE Playermatches (Playermatch_id VARCHAR(255) PRIMARY KEY, Player_id INT NOT NULL, Match_id INT NOT NULL, Start VARCHAR(255), Min INT, Gls INT, Ast INT, PK INT, PKA INT, Sh INT, SoT INT, CrdY INT, CrdR INT, Tch INT, Prs INT, Tkl INT, Intr INT, Blc INT, xG FLOAT, npxG FLOAT, xA Float, SCA INT, GCA INT, cmp INT, Attp INT, PrgD INT, SuccD INT, AttD INT, FOREIGN KEY(Player_id) REFERENCES Players(Player_id), FOREIGN KEY(Match_id) REFERENCES Matches(Match_id))")
 
-def populate_tables(Name, Season, Team, season_table):
-    mydb = mysql.connector.connect(host='localhost',database='mysql',user='root',password="499587li")
+def populate_tables(Name, Season, season_table):
+    mydb = mysql.connector.connect(host='localhost',database='FPL',user='root',password="499587li")
     mycursor = mydb.cursor()
-    mycursor.execute("USE FPL")
 
-    #Update Players
+    Team = season_table[0]['Squad']
     mycursor.execute(f"SELECT player_id FROM Players WHERE Name = '{Name}' AND Team = '{Team}'")
     player_id = mycursor.fetchone()
-    print(player_id)
 
     if player_id == None:
         print('here')
@@ -64,12 +62,13 @@ def populate_tables(Name, Season, Team, season_table):
 
     mydb.commit()
 
+    #mycursor.execute("INSERT INTO Players (Name, Team) ")
 create_tables()
 
 url = "https://fbref.com/en/players/e06683ca/matchlogs/2019-2020/summary/Virgil-van-Dijk-Match-Logs"
 table_data = get_table_data(url)
 clean_table = [i for i in table_data if i["Comp"] == "Premier League"]
-populate_tables("Van Dijk", "2019-2020", "Liverpool", clean_table)
+populate_tables("Van Dijk", "2019-2020", clean_table)
 
 #mydb = mysql.connector.connect(host='localhost',database='mysql',user='root',password="499587li")
 #mycursor = mydb.cursor()
