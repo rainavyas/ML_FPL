@@ -2,8 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import mysql.connector
 from get_URL import get_url
-from get_players_list import get_players
-from update_database import populate_tables
+from update_database import *
 
 def get_table_data(url):
     # GET request to fetch the raw HTML content
@@ -43,14 +42,24 @@ def get_table_data(url):
 
 
 
+# open file with player names and fbref ids
+file_name = "player_fbref_ids.txt"
+with open(file_name, 'r') as f:
+    lines = f.readlines()
 
-premier_league_player_names = get_players()
 seasons = ["2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020"]
 
-
-for name in premier_league_player_names:
+create_tables()
+https://fbref.com/en/players/867239d3/matchlogs/2019-2020/summary/Paul-Pogba-Match-Logs
+for line in lines:
     for season in seasons:
-        url = get_url(name, season)
+        line_parts = line.split(':')
+        name = line_parts[0]
+        id = line_parts[1]
+        id = id[1:]
+
+        # make url
+        url = "https://fbref.com/en/players/"+str(id)+"/matchlogs/"+season+"/"+name
 
         try:
             table_data = get_table_data(url)
