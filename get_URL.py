@@ -13,9 +13,9 @@ def get_url(player_name, season):
 
     search_bar = driver.find_element_by_name("search")
     search_bar.send_keys(player_name)
-    time.sleep(1)
+    time.sleep(0.5)
     driver.find_element_by_class_name("ac-suggestion").click()
-    time.sleep(1)
+    time.sleep(0.5)
     url = driver.current_url
     return(get_summary(url, season))
 
@@ -25,7 +25,7 @@ def get_summary(url, season):
     split_url.extend(["matchlogs", season, "summary", player + "-Match-Logs"])
     return("/".join(split_url))
 
-def get_ID(player_name):
+def get_name_id(player_name):
     driver = webdriver.Chrome()
     driver.get("https://fbref.com/en")
     time.sleep(1)
@@ -40,4 +40,5 @@ def get_ID(player_name):
     url = driver.current_url
     url_parts = url.split('/')
     id = url_parts[5]
-    return id
+    fb_name = url_parts[6]
+    return fb_name, id
