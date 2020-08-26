@@ -3,6 +3,7 @@ import requests
 import mysql.connector
 from get_URL import get_url
 from get_players_list import get_players
+from update_database import populate_tables
 
 def get_table_data(url):
     # GET request to fetch the raw HTML content
@@ -41,19 +42,6 @@ def get_table_data(url):
     return clean_table
 
 
-def write_to_DB(table_data, player_name, season):
-    mydb = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "abc314",
-        database = "fantasyfootball"
-    )
-
-    mycursor = mydb.cursor()
-
-    # Adian's bit
-
-
 
 
 premier_league_player_names = get_players()
@@ -69,8 +57,7 @@ for name in premier_league_player_names:
             print(table_data[0])
         except:
             # Webpage probably doesn't exist
-            print("failed")
             continue
 
 
-        write_to_DB(table_data, name, season)
+        populate_tables(name, season, table_data)
